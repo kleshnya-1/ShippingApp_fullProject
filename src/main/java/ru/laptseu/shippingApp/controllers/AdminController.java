@@ -36,11 +36,20 @@ public class AdminController {
         model.addAttribute("shops", shopDAO.getAll());
         return "/admin/showAllShops";
     }
+
     @GetMapping("/showProducts")
     public String getAllProducts(Model model) {
         model.addAttribute("products", productDAO.getAll());
         return "/admin/showAllProducts";
     }
+
+
+    @GetMapping("/showProductsByPrice")
+    public String getAllProductsByPrice(Model model) {
+        model.addAttribute("products", productDAO.getAllByPrice());
+        return "/admin/showAllProducts";
+    }
+
     @GetMapping("/showClients")
     public String getAllClients(Model model) {
         model.addAttribute("clients", clientDAO.getAll());

@@ -12,11 +12,18 @@ public class ShopController {
 
     @GetMapping("/")
     public String main(){
-        return "shop/first";
+        return "/shop/first";
     }
+
+
+    @GetMapping("/addProduct")
+    public String add() {
+        return "/shop/addProduct";
+    }
+
 
     @GetMapping("/update")
     public String update(){
-        return "shop/update";
+        return "/shop/update";
     }
 }

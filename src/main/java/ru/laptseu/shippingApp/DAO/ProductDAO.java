@@ -5,17 +5,17 @@ package ru.laptseu.shippingApp.DAO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.laptseu.shippingApp.models.Categories;
+import ru.laptseu.shippingApp.DAO.interfaces.DataAccessInterface;
+import ru.laptseu.shippingApp.DAO.mappers.ProductMapper;
+import ru.laptseu.shippingApp.DAO.mappers.ShopMapper;
 import ru.laptseu.shippingApp.models.Product;
 import ru.laptseu.shippingApp.models.Shop;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Log4j2
 @Component
-public class ProductDAO extends  DAO implements DataAccessInterface {
+public class ProductDAO    implements DataAccessInterface {
 
     private final JdbcTemplate jdbcTemplate;
     private String database = "products";
@@ -28,6 +28,10 @@ public class ProductDAO extends  DAO implements DataAccessInterface {
     @Override
     public List getAll() {
         return jdbcTemplate.query("select * from "+database+" order by id", new ProductMapper());
+    }
+
+    public List getAllByPrice() {
+        return jdbcTemplate.query("select * from "+database+" order by price", new ProductMapper());
     }
 
     @Override

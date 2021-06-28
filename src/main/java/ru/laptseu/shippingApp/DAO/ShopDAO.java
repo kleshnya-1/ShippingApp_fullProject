@@ -1,15 +1,17 @@
 package ru.laptseu.shippingApp.DAO;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.laptseu.shippingApp.DAO.interfaces.AddressUpdatable;
+import ru.laptseu.shippingApp.DAO.interfaces.DataAccessInterface;
+import ru.laptseu.shippingApp.DAO.mappers.ShopMapper;
 import ru.laptseu.shippingApp.models.Shop;
 
 import java.util.List;
 
 @Component
 //@Log4j2
-public class ShopDAO extends DAO implements DataAccessInterface, AddressUpdatable {
+public class ShopDAO   implements DataAccessInterface, AddressUpdatable {
 
     private final JdbcTemplate jdbcTemplate;
        private String database = "shops";

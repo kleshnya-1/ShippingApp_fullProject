@@ -5,17 +5,19 @@ package ru.laptseu.shippingApp.DAO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.laptseu.shippingApp.DAO.interfaces.AddressUpdatable;
+import ru.laptseu.shippingApp.DAO.interfaces.DataAccessInterface;
+import ru.laptseu.shippingApp.DAO.mappers.ClientMapper;
+import ru.laptseu.shippingApp.DAO.mappers.ShopMapper;
 import ru.laptseu.shippingApp.models.Client;
 import ru.laptseu.shippingApp.models.Shop;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Log4j2
 @Component
-public class ClientDAO extends DAO implements DataAccessInterface, AddressUpdatable {
+public class ClientDAO   implements DataAccessInterface, AddressUpdatable {
 
 
     private final JdbcTemplate jdbcTemplate;

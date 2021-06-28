@@ -19,9 +19,9 @@
 
                     <th>ID</th>
                     <th>Name</th>
-                    <th>address</th>
-
-
+                    <th>shopId</th>
+                    <th>quantity</th>
+                    <th>price</th>
 
 
                 </tr>
@@ -30,8 +30,9 @@
                 <tr th:each="t : ${products}">
                     <td th:text="${t.getId()}">fff</td>
                     <td th:text="${t.getName()}">fff</td>
-                    <td th:text="${t.getAddress()}">fff</td>
-
+                    <td th:text="${t.getShopId()}">fff</td>
+                    <td th:text="${t.getQuantity()}">fff</td>
+                    <td th:text="${t.getPrice()}">fff</td>
 
 
                 </tr>

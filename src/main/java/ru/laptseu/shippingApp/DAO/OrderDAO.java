@@ -1,81 +1,76 @@
-/*
 
 package ru.laptseu.shippingApp.DAO;
 
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import ru.laptseu.shippingApp.DAO.interfaces.DataAccessInterface;
+import ru.laptseu.shippingApp.DAO.mappers.OrderMapper;
+import ru.laptseu.shippingApp.DAO.mappers.ProductMapper;
 import ru.laptseu.shippingApp.models.Order;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.List;
 
 @Log4j2
-public class OrderDAO extends DAO implements DataAccessInterface {
+@Component
+public class OrderDAO   implements DataAccessInterface {
 
-    String mainPath = getOrderFilePath();
+    private final JdbcTemplate jdbcTemplate;
+    private String database = "orders";
 
-    ArrayList <Order> orders = reader.getList(mainPath, new Order());
-@Override
-    public void add(Object o) {
-        // spaces replaced because of executing error while reading from JSON
-        // with other ways for saving data it could be easily returned
-    Order order = (Order)o;
-if (order.getNote() != null)        order.setNote(order.getNote().replace(" ", "_"));
-        order.setAddress(order.getAddress().replace(" ", "_"));
-        this.orders.add(order);
-
-        writer.updateList(mainPath, orders);
-        log.info(order + " added");
-    }
-    @Override
-    public ArrayList getAll() {
-        return orders;
+    public OrderDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Object get(String id) {
-        try {
-            return orders.stream().filter(client -> client.getId().equals(id)).findAny().get();
-        }catch (NoSuchElementException e) {
-            log.error("id "+id+" not found ->"+e);
-        }
-        return null;
+    public List getAll() {
+        return jdbcTemplate.query("select * from "+database+" order by id", new ProductMapper());
+    }
+
+    @Override
+    public Object get(int id) {
+        return  (jdbcTemplate.query("select * from "+database+" where id=?",
+                new Object[]{id}, new OrderMapper())).get(0);
     }
 
     @Override
     public void showAll() {
-
         System.out.println("\n List of orders:");
-        for (Order p:orders){
-            System.out.println(p.toString());
+        List<Order> p = getAll();
+        for (Order s:p){
+            System.out.println(s);
         }
-
     }
 
     @Override
     public void delete(String id) {
-        try {
-            Order removingOrder = orders.stream().filter(p -> p.getId().equals(id)).findAny().get();
-            orders.remove(removingOrder);
-        } catch (NoSuchElementException e) {
-            log.error("id " + id + " not found ->" + e);
-        }
-
+        jdbcTemplate.update("delete * from "+database+" where id=?", id);
     }
 
-    @Override
-    public void updateDataBase() {
-        writer.updateList(mainPath, orders);
-    }
 
     @Override
     public void reset() {
-        writer.resetList(mainPath);
-        orders.clear();
+        jdbcTemplate.update("drop "+database);
     }
+
+
+    public void add(Object o)  {
+        Order p = (Order) o;
+
+        jdbcTemplate.update("insert into "+database+" (price, client_id, adress, note) values (?,?,?,?)",
+                p.getPrice(), p.getClientId(),p.getAddress(),p.getPrice(),p.getNote());
+
+    }
+
+    public void updateProductQuantity(String productId, int quantity){
+        jdbcTemplate.update("update "+database+" set quantity =? where id =?",quantity, productId);
+    }
+
+
 
 
 }
 
 
-*/
+
